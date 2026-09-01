@@ -17,14 +17,23 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle # Включает кэширование для ускорения
 
+      # Этот шаг делает команду 'gradle' доступной в терминале раннера
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
-        # Мы не указываем gradle-version, чтобы использовалась версия из вашего gradle-wrapper.properties
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
+      - name: Generate Gradle Wrapper (if missing)
+        run: |
+          echo "Checking for gradlew..."
+          if [ ! -f gradlew ]; then
+            echo "gradlew not found! Generating it automatically..."
+            gradle wrapper --gradle-version 8.2
+          else
+            echo "gradlew found."
+          fi
+          chmod +x gradlew
+          echo "Files in root directory:"
+          ls -la
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
