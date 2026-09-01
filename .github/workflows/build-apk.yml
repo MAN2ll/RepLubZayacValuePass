@@ -17,10 +17,11 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: gradle # Включает кэширование для ускорения
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
-        # Мы убрали gradle-version, чтобы использовалась версия из gradle-wrapper.properties
+        # Мы не указываем gradle-version, чтобы использовалась версия из вашего gradle-wrapper.properties
 
       - name: Make gradlew executable
         run: chmod +x gradlew
